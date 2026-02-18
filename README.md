@@ -2,6 +2,8 @@
 
 Waybar widgets that show battery level for Logitech wireless peripherals -- keyboard, mouse, and headset -- with event-driven updates and systemd integration.
 
+![screenshot](screenshot.png)
+
 ## Features
 
 - Real-time battery monitoring for Logitech Lightspeed devices
