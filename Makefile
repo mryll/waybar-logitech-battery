@@ -6,6 +6,8 @@ WIDGETS = logibar-keyboard logibar-mouse logibar-headset
 DAEMONS = logibar-hidpp-monitor logibar-headset-monitor
 TOOLS = tools/logibar-hidpp-battery tools/logibar-hidpp-debug tools/logibar-headset-probe
 SERVICES = systemd/logibar-hidpp-monitor.service systemd/logibar-headset-monitor.service
+UDEV_RULE = udev/99-logitech-hidraw.rules
+UDEV_DIR ?= /etc/udev/rules.d
 
 install:
 	$(foreach f,$(WIDGETS) $(DAEMONS),install -Dm755 $(f) $(DESTDIR)$(BINDIR)/$(notdir $(f));)
@@ -21,6 +23,9 @@ install-systemd:
 	systemctl --user daemon-reload
 	systemctl --user enable logibar-hidpp-monitor.service logibar-headset-monitor.service
 
+install-udev:
+	install -Dm644 $(UDEV_RULE) $(DESTDIR)$(UDEV_DIR)/$(notdir $(UDEV_RULE))
+
 install-all: install install-tools install-systemd
 
 uninstall:
@@ -34,6 +39,9 @@ uninstall-systemd:
 	rm -f $(SYSTEMD_DIR)/logibar-hidpp-monitor.service $(SYSTEMD_DIR)/logibar-headset-monitor.service
 	systemctl --user daemon-reload
 
+uninstall-udev:
+	rm -f $(DESTDIR)$(UDEV_DIR)/$(notdir $(UDEV_RULE))
+
 uninstall-all: uninstall uninstall-tools uninstall-systemd
 
-.PHONY: install install-tools install-systemd install-all uninstall uninstall-tools uninstall-systemd uninstall-all
+.PHONY: install install-tools install-systemd install-udev install-all uninstall uninstall-tools uninstall-systemd uninstall-udev uninstall-all

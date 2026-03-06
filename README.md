@@ -36,14 +36,14 @@ Adding other Logitech Lightspeed devices is straightforward -- see [Adding Devic
 
 ### HID device permissions
 
-The daemons need read/write access to `/dev/hidraw*` devices. Create a udev rule:
+The daemons need read/write access to `/dev/hidraw*` devices. The AUR package includes this rule automatically. For manual installs, create it yourself:
 
 ```bash
 sudo tee /etc/udev/rules.d/99-logitech-hidraw.rules << 'EOF'
 # Logitech HID++ devices -- allow user access for battery monitoring
 KERNEL=="hidraw*", ATTRS{idVendor}=="046d", MODE="0660", TAG+="uaccess"
 EOF
-sudo udevadm control --reload-rules && sudo udevadm trigger
+sudo udevadm control --reload-rules && sudo udevadm trigger --action=change --subsystem-match=hidraw
 ```
 
 ## Installation
@@ -54,6 +54,8 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 yay -S logibar
 ```
 
+The AUR package handles everything automatically: udev rule, systemd services enabled and started. Services start immediately in most desktop environments; otherwise you'll see manual instructions.
+
 ### From source
 
 ```bash
@@ -61,22 +63,25 @@ git clone https://github.com/mryll/logibar.git
 cd logibar
 make install PREFIX=~/.local
 make install-systemd
+sudo make install-udev   # udev rule requires root
 ```
 
 This installs:
 - 3 widget scripts + 2 daemons to `~/.local/bin/`
-- 2 systemd user services (enabled and started automatically)
+- 2 systemd user services (enabled automatically, start on next login)
+- udev rule for HID device access
 
 ### Full install (includes debug tools)
 
 ```bash
 make install-all PREFIX=~/.local
+sudo make install-udev
 ```
 
 ### System-wide
 
 ```bash
-sudo make install
+sudo make install install-udev
 make install-systemd   # systemd services are always per-user
 ```
 
