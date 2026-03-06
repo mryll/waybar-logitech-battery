@@ -137,6 +137,19 @@ Available flags: `--color-normal`, `--color-warning`, `--color-critical`.
 
 CSS classes (`normal`, `warning`, `critical`) are also emitted for additional styling via `~/.config/waybar/style.css`.
 
+### Spacing
+
+Adjust padding and margin in your `~/.config/waybar/style.css` to control spacing around the widgets:
+
+```css
+#custom-logibar-keyboard,
+#custom-logibar-mouse,
+#custom-logibar-headset {
+    padding: 0 8px;
+    margin: 0 4px;
+}
+```
+
 ## How it works
 
 ### Architecture
