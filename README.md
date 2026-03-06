@@ -139,16 +139,18 @@ CSS classes (`normal`, `warning`, `critical`) are also emitted for additional st
 
 ### Spacing
 
-Adjust padding and margin in your `~/.config/waybar/style.css` to control spacing around the widgets:
+Adjust `padding` (space **inside** the widget, between border and content) and `margin` (space **outside** the widget, between the widget and its neighbors) in your `~/.config/waybar/style.css`:
 
 ```css
 #custom-logibar-keyboard,
 #custom-logibar-mouse,
 #custom-logibar-headset {
-    padding: 0 8px;
-    margin: 0 4px;
+    padding: 0 8px;   /* top/bottom: 0, left/right: 8px */
+    margin: 0 4px;    /* top/bottom: 0, left/right: 4px */
 }
 ```
+
+Waybar uses standard CSS shorthand order — `top right bottom left` (clockwise). With 2 values: first = top/bottom, second = left/right.
 
 ## How it works
 
